@@ -1,0 +1,17 @@
+<launch>
+	
+	<arg name="use_xacro_new" default="true" />
+	
+	<arg if="$(arg use_xacro_new)" name="use_xacro" default="true" />
+	<arg if="$(arg use_xacro_new)" name="filename" default="navvis_rosbag.xacro" />
+	<arg if="$(arg use_xacro_new)" name="file" default="$(find navvis_rosbag)/urdf/$(arg filename)" />
+	
+	<param if="$(arg use_xacro_new)" name="/use_sim_time" value="true" />
+	<node if="$(arg use_xacro_new)" pkg="rosbag" type="play" name="rosbag" args="--clock $(find navvis_rosbag)/Bag/glennan_5_basic_short.bag" />
+	
+	<node pkg ="map_server" type="map_server" name="map" args="$(find maps_glennan)/maps/glennan5_map.yaml" />
+	
+	<include file="$(find navvis_description)/launch/launch_navvis.launch" pass_all_args="true" />
+	
+	
+</launch>
